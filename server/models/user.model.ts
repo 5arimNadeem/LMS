@@ -11,7 +11,10 @@ export interface Iuser extends Document {
     name: string;
     email: string;
     password: string;
-    avatar: string
+    avatar: {
+        public_id: string;
+        url: string;
+    }
     role: string;
     isverified: boolean;
     courses: Array<{ courseId: string }>;
@@ -47,6 +50,7 @@ const userSchema: Schema<Iuser> = new mongoose.Schema(
 
         avatar: {
             public_id: String,
+            // public_id: String,
             url: String,
         },
         role: {
