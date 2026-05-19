@@ -6,6 +6,7 @@ export const app = express();
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import UserRouter from './routes/user.route';
+import courseRouter from './routes/course.route';
 
 // bodyparser 
 
@@ -26,6 +27,7 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
 
 // routes 
 app.use('/api/v1', UserRouter);
+app.use('/api/v1', courseRouter);
 
 // test api 
 app.get(/test/, (req: Request, res: Response, next: NextFunction) => {
