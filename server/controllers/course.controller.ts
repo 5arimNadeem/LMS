@@ -246,7 +246,7 @@ export const addAnswer = CatchAsyncError(
             await course?.save();
 
             if (req.user?._id === question.user._id) {
-            // send notification to admin
+                // send notification to admin
                 // await NotificationModel.create({
                 //     // user: req.user?._id,
                 //     // title: "New Question Reply Received",
@@ -274,6 +274,131 @@ export const addAnswer = CatchAsyncError(
                     return next(new ErrorHandler(error.message, 500));
                 }
             }
+            res.status(200).json({ success: true, course });
+        } catch (error: any) {
+            return next(new ErrorHandler(error.message, 500));
+        }
+    }
+);
+
+//add review to course
+
+interface IAddReviewData {
+    review: string;
+    rating: Number;
+    userId: string;
+}
+
+export const addReview = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const userCoursesList = req.user?.courses;
+
+            const { review, rating }: IAddReviewData = req.body;
+
+            const courseId = req.params.id;
+
+            //check id courseId exist in userCourseList
+
+            const courseExists = userCoursesList?.some(
+                (course: any) => course._id.toString() === courseId.toString()
+            );
+
+            if (!courseExists) {
+                return next(
+                    new ErrorHandler("You are not eligible to access this course", 404)
+                );
+            }
+
+            const course = await CourseModel.findById(courseId);
+
+            const reviewData: any = {
+                user: req.user,
+                comment: review,
+                rating,
+                // createdAt: new Date().toISOString(),
+                // updatedAt: new Date().toISOString(),
+            };
+
+            course?.reviews.push(reviewData);
+
+            let avg = 0;
+
+            course?.reviews.forEach((rev: any) => {
+                avg += rev.rating;
+            });
+            if (course) {
+                course.ratings = avg / course?.reviews.length;
+            }
+
+            await course?.save();
+
+            // await safeRedis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
+
+            //create noitication
+            // await NotificationModel.create({
+            //     user: req.user?._id,
+            //     title: "New Review Received",
+            //     message: `${req.user?.name} has given a review in ${course?.name}`,
+            // });
+
+            const notification = {
+                title: "New Review Received",
+                message: `${req.user?.name} has given a review in ${course?.name}`
+            }
+
+            res.status(200).json({
+                success: true,
+                course,
+            });
+        } catch (error: any) {
+            return next(new ErrorHandler(error.message, 500));
+        }
+    }
+);
+
+//add reply in reviews
+interface IAddReviewReplyData {
+    comment: string;
+    courseId: string;
+    reviewId: string;
+}
+
+export const addReplyToReview = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { comment, courseId, reviewId }: IAddReviewReplyData = req.body;
+
+            const course = await CourseModel.findById(courseId);
+
+            if (!course) {
+                return next(new ErrorHandler("Course not found", 404));
+            }
+
+            const review = course?.reviews?.find(
+                (rev: any) => rev._id.toString() === reviewId
+            );
+
+            if (!review) {
+                return next(new ErrorHandler("Review not found", 404));
+            }
+
+            const replyData: any = {
+                user: req.user,
+                comment,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            };
+
+            if (!review.commentReplies) {
+                review.commentReplies = [];
+            }
+
+            review.commentReplies?.push(replyData);
+
+            await course?.save();
+            // await safeRedis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
+
             res.status(200).json({ success: true, course });
         } catch (error: any) {
             return next(new ErrorHandler(error.message, 500));
