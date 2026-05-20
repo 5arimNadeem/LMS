@@ -9,6 +9,7 @@ import CourseModel from "../models/course.model";
 import path from "path";
 import ejs from "ejs";
 import sendMail from "../utils/sendMail";
+import NotificationModel from "../models/notification.model";
 
 //upload course
 export const uploadCourse = CatchAsyncError(
@@ -181,11 +182,11 @@ export const addQuestion = CatchAsyncError(
             courseContent.questions.push(newQuestion);
 
             //notification
-            // await NotificationModel.create({
-            //     user: req.user?._id,
-            //     title: "New Question Received",
-            //     message: `You have a new question in ${courseContent.title}`,
-            // });
+            await NotificationModel.create({
+                userId: req.user?._id,
+                title: "New Question Received",
+                message: `You have a new question in ${courseContent.title}`,
+            });
 
             //save the updated course
 
@@ -247,11 +248,11 @@ export const addAnswer = CatchAsyncError(
 
             if (req.user?._id === question.user._id) {
                 // send notification to admin
-                // await NotificationModel.create({
-                //     // user: req.user?._id,
-                //     // title: "New Question Reply Received",
-                //     // message: `You have a new question reply in ${courseContent.title}`,
-                // });
+                await NotificationModel.create({
+                    userId: req.user?._id,
+                    title: "New Question Reply Received",
+                    message: `You have a new question reply in ${courseContent.title}`,
+                });
             } else {
                 const data = {
                     name: question.user.name,
@@ -336,11 +337,11 @@ export const addReview = CatchAsyncError(
             // await safeRedis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
 
             //create noitication
-            // await NotificationModel.create({
-            //     user: req.user?._id,
-            //     title: "New Review Received",
-            //     message: `${req.user?.name} has given a review in ${course?.name}`,
-            // });
+            await NotificationModel.create({
+                userId: req.user?._id,
+                title: "New Review Received",
+                message: `${req.user?.name} has given a review in ${course?.name}`,
+            });
 
             const notification = {
                 title: "New Review Received",

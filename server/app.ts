@@ -7,6 +7,8 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import UserRouter from './routes/user.route';
 import courseRouter from './routes/course.route';
+import orderRouter from './routes/order.route';
+import notificationRouter from './routes/notification.route';
 
 // bodyparser 
 
@@ -26,8 +28,9 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
 })
 
 // routes 
-app.use('/api/v1', UserRouter);
-app.use('/api/v1', courseRouter);
+app.use('/api/v1', UserRouter, orderRouter, courseRouter, notificationRouter);
+// app.use('/api/v1', courseRouter);
+// app.use('/api/v1', orderRouter);
 
 // test api 
 app.get(/test/, (req: Request, res: Response, next: NextFunction) => {

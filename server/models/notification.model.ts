@@ -1,10 +1,10 @@
-import mongoose, { Document, Model, Schema } from "mongoose";
+import mongoose, { Document, Model, Schema, Types } from "mongoose";
 
 export interface INotification extends Document {
-    userId: string;
     title: string;
     message: string;
     status: string;
+    userId: Types.ObjectId;
 }
 
 const notificationSchema = new Schema<INotification>(
@@ -22,6 +22,11 @@ const notificationSchema = new Schema<INotification>(
             required: true,
             default: "unread",
         },
+        userId:{
+            type: Schema.Types.ObjectId,
+            ref: "user", 
+            required: true,
+        }
     },
     { timestamps: true }
 );
