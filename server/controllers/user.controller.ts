@@ -10,7 +10,7 @@ import sendMail from "../utils/sendMail";
 import ErrorHandler from "../utils/ErrorHandler";
 import { accessTokenOptions, refreshTokenOptions, sendToken } from "../utils/jwt";
 import { safeRedis } from "../utils/redis";
-import { getUserById } from "../services/user.service";
+import { getAllUsersServices, getUserById, updateUserRoleService } from "../services/user.service";
 import cloudinary from "cloudinary"
 // import { get } from "http";
 
@@ -432,6 +432,31 @@ export const updateProfilePicture = CatchAsyncError(
                 success: true,
                 user,
             });
+        } catch (error: any) {
+            return next(new ErrorHandler(error.message, 400));
+        }
+    }
+);
+
+//get All Users --->only for admin
+
+export const getAllUsers = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            getAllUsersServices(res);
+        } catch (error: any) {
+            return next(new ErrorHandler(error.message, 500));
+        }
+    }
+);
+
+//update user role
+
+export const updateUserRole = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { id, role } = req.body;
+            updateUserRoleService(res, id, role);
         } catch (error: any) {
             return next(new ErrorHandler(error.message, 400));
         }

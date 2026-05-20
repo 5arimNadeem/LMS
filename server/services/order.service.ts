@@ -14,7 +14,7 @@ export const newOrder = CatchAsyncError(async (data: any, res: Response) => {
 
 //get All orders --->only for admin
 
-// export const getAllOrderService = async (res: Response) => {
-//     const users = await OrderModel.find().sort({ createdAt: -1 });
-//     res.status(201).json({ success: true, users });
-// };
+export const getAllOrderServices = async (res: Response) => {
+    const orders = await OrderModel.find().sort({ createdAt: -1 });
+    res.status(201).json({ success: true, orders });
+};

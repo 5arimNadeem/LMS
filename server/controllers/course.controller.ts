@@ -3,7 +3,7 @@ import { CatchAsyncError } from "../middleware/catchAsyncError";
 import ErrorHandler from "../utils/ErrorHandler";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
-import { createCourse } from "../services/course.service";
+import { createCourse, getAllCourseServices } from "../services/course.service";
 import CourseModel from "../models/course.model";
 // import NotificationModel from "../models/notification.model";
 import path from "path";
@@ -401,6 +401,17 @@ export const addReplyToReview = CatchAsyncError(
             // await safeRedis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
 
             res.status(200).json({ success: true, course });
+        } catch (error: any) {
+            return next(new ErrorHandler(error.message, 500));
+        }
+    }
+);
+
+
+export const getAllCourse = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            getAllCourseServices(res);
         } catch (error: any) {
             return next(new ErrorHandler(error.message, 500));
         }
