@@ -9,6 +9,8 @@ import UserRouter from './routes/user.route';
 import courseRouter from './routes/course.route';
 import orderRouter from './routes/order.route';
 import notificationRouter from './routes/notification.route';
+import analyticsRouter from './routes/analytics.route';
+import layoutRouter from './routes/layout.route';
 
 // bodyparser 
 
@@ -19,8 +21,8 @@ app.use(cookieParser());
 // cors
 
 app.use(cors({
-    origin: process.env.ORIGIN,
-    // credentials: true
+    origin: ['http://localhost:3000'],
+    credentials: true
 }))
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
@@ -28,18 +30,8 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
 })
 
 // routes 
-app.use('/api/v1', UserRouter, orderRouter, courseRouter, notificationRouter);
-// app.use('/api/v1', courseRouter);
-// app.use('/api/v1', orderRouter);
+app.use('/api/v1', UserRouter, orderRouter, courseRouter, notificationRouter, analyticsRouter, layoutRouter);
 
-// test api 
-app.get(/test/, (req: Request, res: Response, next: NextFunction) => {
-    // res.send("Hello World");
-    res.status(200).json({
-        success: true,
-        message: "Test pass "
-    })
-})
 
 app.all(/(.*)/, (req: Request, res: Response, next: NextFunction) => {
     const err = new Error(`Route ${req.originalUrl} not found`) as any;

@@ -10,6 +10,7 @@ import path from "path";
 import ejs from "ejs";
 import sendMail from "../utils/sendMail";
 import NotificationModel from "../models/notification.model";
+import { safeRedis } from "../utils/redis";
 
 //upload course
 export const uploadCourse = CatchAsyncError(
@@ -106,7 +107,7 @@ export const getAllCourses = CatchAsyncError(
 
             res.status(200).json({ success: true, courses });
 
-            //   await safeRedis.set("allcourses", JSON.stringify(courses), "EX", 604800);
+            await safeRedis.set("allcourses", JSON.stringify(courses), "EX", 604800);
             // }
         } catch (error: any) {
             return new ErrorHandler(error.message, 500);
@@ -334,7 +335,7 @@ export const addReview = CatchAsyncError(
 
             await course?.save();
 
-            // await safeRedis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
+            await safeRedis.set(courseId.toString(), JSON.stringify(course), "EX", 604800); // 7days
 
             //create noitication
             await NotificationModel.create({
@@ -398,7 +399,7 @@ export const addReplyToReview = CatchAsyncError(
             review.commentReplies?.push(replyData);
 
             await course?.save();
-            // await safeRedis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
+            await safeRedis.set(courseId.toString(), JSON.stringify(course), "EX", 604800); // 7days
 
             res.status(200).json({ success: true, course });
         } catch (error: any) {
@@ -412,6 +413,31 @@ export const getAllCourse = CatchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             getAllCourseServices(res);
+        } catch (error: any) {
+            return next(new ErrorHandler(error.message, 500));
+        }
+    }
+);
+
+//delete Course - only for admin
+
+export const deleteCourse = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { id } = req.params;
+
+            const course = await CourseModel.findById(id);
+
+            if (!course) {
+                return next(new ErrorHandler("Course not found", 404));
+            }
+
+            await course.deleteOne({ id });
+            await safeRedis.del(id.toString());
+
+            res
+                .status(200)
+                .json({ success: true, message: "Course deleted successfully" });
         } catch (error: any) {
             return next(new ErrorHandler(error.message, 500));
         }
