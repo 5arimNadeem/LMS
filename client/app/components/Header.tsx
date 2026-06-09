@@ -19,7 +19,6 @@ import {
 import toast from "react-hot-toast";
 import { useLoadUserQuery } from "../../redux/features/api/apiSlice";
 import Loader from "./Loader/Loader";
-// import Loader from "./Loader/Loader";
 
 interface HeaderProps {
     open: boolean;
@@ -39,7 +38,7 @@ const Header: FC<HeaderProps> = ({
     const [active, setActive] = useState(false);
     const [openSidebar, setOpenSidebar] = useState(false);
 
-    // const { data } = useSession();
+    const { data } = useSession();
     const {
         data: userData,
         isLoading,
@@ -50,30 +49,30 @@ const Header: FC<HeaderProps> = ({
     const { } = useLogOutQuery(undefined, { skip: !logout ? true : false });
     const [hasTriggered, setHasTriggered] = useState(false);
 
-    // useEffect(() => {
-    //     if (!isLoading && data && !userData && !hasTriggered) {
-    //         setHasTriggered(true); // prevent re-trigger
-    //         socialAuth({
-    //             email: data?.user?.email,
-    //             name: data?.user?.name,
-    //             avatar: data.user?.image,
-    //         });
-    //         refetch();
-    //     }
+    useEffect(() => {
+        if (!isLoading && data && !userData && !hasTriggered) {
+            setHasTriggered(true); // prevent re-trigger
+            socialAuth({
+                email: data?.user?.email,
+                name: data?.user?.name,
+                avatar: data.user?.image,
+            });
+            refetch();
+        }
 
-    //     if (error && "data" in error) {
-    //         const errorData = error as any;
-    //         toast.error(errorData.data.message);
-    //     }
+        if (error && "data" in error) {
+            const errorData = error as any;
+            toast.error(errorData.data.message);
+        }
 
-    //     if (data === null && isSuccess) {
-    //         toast.success("Login Successfully");
-    //     }
+        if (data === null && isSuccess) {
+            toast.success("Login Successfully");
+        }
 
-    //     if (data === null && !isLoading && !userData) {
-    //         setLogOut(true);
-    //     }
-    // }, [data, isSuccess, isLoading, userData, error, socialAuth, refetch, hasTriggered]);
+        if (data === null && !isLoading && !userData) {
+            setLogOut(true);
+        }
+    }, [data, isSuccess, isLoading, userData, error, socialAuth, refetch, hasTriggered]);
 
 
     useEffect(() => {
@@ -114,7 +113,7 @@ const Header: FC<HeaderProps> = ({
                                         href={"/"}
                                         className="text-[25px] font-Poppins font-[500] text-black dark:text-white"
                                     >
-                                        Elearning
+                                        LMS
                                     </Link>
                                 </div>
                                 <div className="flex items-center space-x-2 800px:space-x-4">
@@ -169,7 +168,7 @@ const Header: FC<HeaderProps> = ({
                                 <div className="w-[70%] fixed z-[999999999] h-screen bg-white dark:bg-slate-900 dark:bg-opacity-90 top-0 right-0">
                                     <NavItems activeItem={activeItem} isMobile={true} />
                                     <div className="ml-[20px] mt-4">
-                                        {/* {userData?.user ? (
+                                        {userData?.user ? (
                                             <Link href={"/profile"}>
                                                 <Image
                                                     src={
@@ -193,12 +192,12 @@ const Header: FC<HeaderProps> = ({
                                                 className="cursor-pointer dark:text-white text-black"
                                                 onClick={() => setOpen(true)}
                                             />
-                                        )} */}
+                                        )}
                                     </div>
                                     <br />
                                     <br />
                                     <p className="text-[16px] px-2 pl-5 text-black dark:text-white">
-                                        Copyright © 2025 ELearning
+                                        Copyright © 2025 LMS
                                     </p>
                                 </div>
                             </div>
@@ -212,7 +211,7 @@ const Header: FC<HeaderProps> = ({
                             setRoute={setRoute}
                             activeItem={activeItem}
                             component={Login}
-                        // refetch={refetch}
+                            refetch={refetch}
                         />
                     )}
 

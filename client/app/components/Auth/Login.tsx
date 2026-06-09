@@ -10,7 +10,7 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
 import { useLoginMutation, useSocialAuthMutation } from "@/redux/features/auth/authApi";
-// import { signIn, getSession } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 
 interface Props {
     setRoute: (route: string) => void;
@@ -60,55 +60,55 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
         }
     }, [isSuccessGoogle, errorGoogle, setOpen, refetch]);
 
-    // const googleSignIn = async () => {
-    //     try {
-    //         const result = await signIn("google", {
-    //             redirect: false,
-    //         });
+    const googleSignIn = async () => {
+        try {
+            const result = await signIn("google", {
+                redirect: false,
+            });
 
-    //         if (result?.error) {
-    //             toast.error("Google sign in failed");
-    //             return;
-    //         }
+            if (result?.error) {
+                toast.error("Google sign in failed");
+                return;
+            }
 
-    //         const session = await getSession();
-    //         if (session?.user) {
-    //             await socialAuth({
-    //                 email: session.user.email,
-    //                 name: session.user.name,
-    //                 avatar: session.user.image,
-    //             });
-    //         }
-    //     } catch (error) {
-    //         toast.error("Google sign in failed");
-    //         console.error("Google sign in error:", error);
-    //     }
-    // };
+            const session = await getSession();
+            if (session?.user) {
+                await socialAuth({
+                    email: session.user.email,
+                    name: session.user.name,
+                    avatar: session.user.image,
+                });
+            }
+        } catch (error) {
+            toast.error("Google sign in failed");
+            console.error("Google sign in error:", error);
+        }
+    };
 
-    // const githubSignIn = async () => {
-    //     try {
-    //         const result = await signIn("github", {
-    //             redirect: false,
-    //         });
+    const githubSignIn = async () => {
+        try {
+            const result = await signIn("github", {
+                redirect: false,
+            });
 
-    //         if (result?.error) {
-    //             toast.error("GitHub sign in failed");
-    //             return;
-    //         }
+            if (result?.error) {
+                toast.error("GitHub sign in failed");
+                return;
+            }
 
-    //         const session = await getSession();
-    //         if (session?.user) {
-    //             await socialAuth({
-    //                 email: session.user.email,
-    //                 name: session.user.name,
-    //                 avatar: session.user.image,
-    //             });
-    //         }
-    //     } catch (error) {
-    //         toast.error("GitHub sign in failed");
-    //         console.error("GitHub sign in error:", error);
-    //     }
-    // };
+            const session = await getSession();
+            if (session?.user) {
+                await socialAuth({
+                    email: session.user.email,
+                    name: session.user.name,
+                    avatar: session.user.image,
+                });
+            }
+        } catch (error) {
+            toast.error("GitHub sign in failed");
+            console.error("GitHub sign in error:", error);
+        }
+    };
 
     const formik = useFormik({
         initialValues: { email: "", password: "" },
@@ -121,7 +121,7 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
     const { errors, touched, values, handleChange, handleSubmit } = formik;
     return (
         <div className="w-full">
-            <h1 className={styles.title}>Login with Elearning</h1>
+            <h1 className={styles.title}>Login with LMS</h1>
             <form onSubmit={handleSubmit}>
                 <div className="w-full mt-5 relative mb-1">
                     <label className={styles.label} htmlFor="email">
@@ -187,12 +187,12 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
                     <FcGoogle
                         size={30}
                         className="cursor-pointer mr-2"
-                        // onClick={googleSignIn}
+                        onClick={googleSignIn}
                     />
                     <AiFillGithub
                         size={30}
                         className="cursor-pointer ml-2"
-                        // onClick={githubSignIn}
+                        onClick={githubSignIn}
                     />
                 </div>
                 <h5 className="text-center pt-4 font-Poppins text-[14px] text-black dark:text-white">

@@ -52,7 +52,7 @@ const NavItems: FC<Props> = ({ activeItem, isMobile }) => {
                             <span
                                 className={`text-[25px] font-Poppins font-[500] text-black dark:text-white`}
                             >
-                                ELearning
+                                LMS
                             </span>
                         </Link>
                     </div>
