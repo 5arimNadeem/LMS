@@ -11,6 +11,7 @@ import ejs from "ejs";
 import sendMail from "../utils/sendMail";
 import NotificationModel from "../models/notification.model";
 import { safeRedis } from "../utils/redis";
+import axios from "axios"
 
 //upload course
 export const uploadCourse = CatchAsyncError(
@@ -464,6 +465,18 @@ export const generateVideoUrl = CatchAsyncError(
             res.json(response.data);
         } catch (error: any) {
             return next(new ErrorHandler(error.message, 400));
+        }
+    }
+);
+
+//get All Courses --->only for admin
+
+export const getAdminAllCourses = CatchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            getAllCourseServices(res);
+        } catch (error: any) {
+            return next(new ErrorHandler(error.message, 500));
         }
     }
 );

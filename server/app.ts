@@ -5,7 +5,7 @@ import express, { NextFunction, Request, Response } from 'express';
 export const app = express();
 import cors from "cors"
 import cookieParser from "cookie-parser"
-import UserRouter from './routes/user.route';
+import userRouter from './routes/user.route';
 import courseRouter from './routes/course.route';
 import orderRouter from './routes/order.route';
 import notificationRouter from './routes/notification.route';
@@ -30,7 +30,7 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
 })
 
 // routes 
-app.use('/api/v1', UserRouter, orderRouter, courseRouter, notificationRouter, analyticsRouter, layoutRouter);
+app.use('/api/v1', userRouter, orderRouter, courseRouter, notificationRouter, analyticsRouter, layoutRouter);
 
 
 app.all(/(.*)/, (req: Request, res: Response, next: NextFunction) => {
