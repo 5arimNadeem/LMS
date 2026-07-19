@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncError";
+import { Request, Response, NextFunction } from "express";
 import ErrorHandler from "../utils/ErrorHandler";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
@@ -325,7 +325,7 @@ export const addReview = CatchAsyncError(
 
             course?.reviews.push(reviewData);
 
-            let avg = 0;
+            const avg = 0;
 
             course?.reviews.forEach((rev: any) => {
                 avg += rev.rating;
@@ -420,9 +420,9 @@ export const getAllCourse = CatchAsyncError(
     }
 );
 
-//delete Course - only for admin
+//deconste Course - only for admin
 
-export const deleteCourse = CatchAsyncError(
+export const deconsteCourse = CatchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params;
@@ -433,12 +433,12 @@ export const deleteCourse = CatchAsyncError(
                 return next(new ErrorHandler("Course not found", 404));
             }
 
-            await course.deleteOne({ id });
+            await course.deconsteOne({ id });
             await safeRedis.del(id.toString());
 
             res
                 .status(200)
-                .json({ success: true, message: "Course deleted successfully" });
+                .json({ success: true, message: "Course deconsted successfully" });
         } catch (error: any) {
             return next(new ErrorHandler(error.message, 500));
         }
