@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid, GridActionsCell } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { useTheme } from "next-themes";
 import { useGetAllCoursesQuery } from "@/redux/features/courses/courseApi";
@@ -93,12 +93,12 @@ const AllInvoices = ({ isDashboard }: Props) => {
             {isLoading ? (
                 <Loader />
             ) : (
-                <Box m={isDashboard ? "0" : "40px"}>
+                <Box sx={{ m: isDashboard ? "0" : "40px" }}>
                     <Box
-                        m={isDashboard ? "0" : "40px 0 0 0"}
-                        height={isDashboard ? "35vh" : "90vh"}
-                        overflow={"hidden"}
                         sx={{
+                            m: isDashboard ? "0" : "40px 0 0 0",
+                            height: isDashboard ? "35vh" : "90vh",
+                            overflow: "hidden",
                             "& .MuiDataGrid-root": {
                                 border: "none",
                                 outline: "none",
@@ -151,7 +151,7 @@ const AllInvoices = ({ isDashboard }: Props) => {
                             checkboxSelection={isDashboard ? false : true}
                             rows={rows}
                             columns={columns}
-                            components={isDashboard ? {} : { Toolbar: GridActionsCell }}
+                            slots={isDashboard ? {} : { toolbar: GridToolbar }}
                         />
                     </Box>
                 </Box>

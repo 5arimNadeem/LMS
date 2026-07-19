@@ -1,5 +1,5 @@
 "use client";
-import { FC, useEffect, useState } from "react";
+import { FC, ReactElement, useEffect, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography } from "@mui/material";
 import "react-pro-sidebar/dist/css/styles.css";
@@ -33,7 +33,7 @@ import { redirect } from "next/navigation";
 interface itemProps {
     title: string;
     to: string;
-    icon: JSX.Element;
+    icon: ReactElement;
     selected: string;
     setSelected: any;
 }
@@ -120,10 +120,12 @@ const Sidebar = () => {
                     >
                         {!isCollapsed && (
                             <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                alignItems="center"
-                                ml="10px"
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    ml: "10px",
+                                }}
                             >
                                 <Link href="/" className="block">
                                     <h3 className="text-[25px] font-Poppins uppercase dark:text-white text-black">
@@ -141,8 +143,8 @@ const Sidebar = () => {
                     </MenuItem>
 
                     {!isCollapsed && (
-                        <Box mb="25px">
-                            <Box display="flex" justifyContent="center" alignItems="center">
+                        <Box sx={{ mb: "25px" }}>
+                            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                                 <Image
                                     alt="profile-user"
                                     width={100}
@@ -156,7 +158,7 @@ const Sidebar = () => {
                                     }}
                                 />
                             </Box>
-                            <Box textAlign="center">
+                            <Box sx={{ textAlign: "center" }}>
                                 <Typography
                                     variant="h4"
                                     className="!text-[20px] text-black dark:text-[#ffffffc1]"
@@ -175,7 +177,7 @@ const Sidebar = () => {
                         </Box>
                     )}
 
-                    <Box paddingLeft={isCollapsed ? undefined : "8%"}>
+                    <Box sx={{ paddingLeft: isCollapsed ? undefined : "8%" }}>
                         <Item
                             title="Dashboard"
                             to="/admin"

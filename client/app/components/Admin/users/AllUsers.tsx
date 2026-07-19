@@ -147,7 +147,7 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
             {isLoading ? (
                 <Loader />
             ) : (
-                <Box m="20px">
+                <Box sx={{ m: "20px" }}>
                     {isTeam && (
                         <div className="w-full flex justify-end">
                             <div
@@ -159,9 +159,9 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
                         </div>
                     )}
                     <Box
-                        m="40px 0 0 0"
-                        height="80vh"
                         sx={{
+                            m: "40px 0 0 0",
+                            height: "80vh",
                             "& .MuiDataGrid-root": {
                                 border: "none",
                                 outline: "none",

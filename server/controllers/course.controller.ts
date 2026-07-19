@@ -325,7 +325,7 @@ export const addReview = CatchAsyncError(
 
             course?.reviews.push(reviewData);
 
-            const avg = 0;
+            let avg = 0;
 
             course?.reviews.forEach((rev: any) => {
                 avg += rev.rating;
@@ -420,9 +420,9 @@ export const getAllCourse = CatchAsyncError(
     }
 );
 
-//deconste Course - only for admin
+//delete Course - only for admin
 
-export const deconsteCourse = CatchAsyncError(
+export const deleteCourse = CatchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params;
@@ -433,12 +433,12 @@ export const deconsteCourse = CatchAsyncError(
                 return next(new ErrorHandler("Course not found", 404));
             }
 
-            await course.deconsteOne({ id });
+            await course.deleteOne();
             await safeRedis.del(id.toString());
 
             res
                 .status(200)
-                .json({ success: true, message: "Course deconsted successfully" });
+                .json({ success: true, message: "Course deleted successfully" });
         } catch (error: any) {
             return next(new ErrorHandler(error.message, 500));
         }

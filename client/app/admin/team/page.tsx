@@ -5,7 +5,7 @@ import AdminSidebar from "../../../app/components/Admin/sidebar/AdminSidebar";
 import AdminProtected from "../../../app/hooks/AdminProtected";
 import Heading from "../../../app/utils/Heading";
 import React from "react";
-import AllUsers from "@/app/components/Admin/users/Allusers";
+import AllUsers from "@/app/components/Admin/users/AllUsers";
 
 const page = () => {
     return (
