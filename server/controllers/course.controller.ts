@@ -106,9 +106,8 @@ export const getAllCourses = CatchAsyncError(
                 "-courseData.videoUrl -courseData.suggestion -courseData.question -courseData.links"
             );
 
-            res.status(200).json({ success: true, courses });
-
             await safeRedis.set("allcourses", JSON.stringify(courses), "EX", 604800);
+            res.status(200).json({ success: true, courses });
             // }
         } catch (error: any) {
             return new ErrorHandler(error.message, 500);

@@ -52,9 +52,9 @@ const CourseDetailsPage = ({ id }: Props) => {
             ) : (
                 <div>
                     <Heading
-                        title={data.course.name + "-LMS"}
+                        title={data?.course?.name + "-LMS"}
                         description="LMS is a platform for students to learn and get help from teachers"
-                        keywords={data?.course.tags}
+                        keywords={data?.course?.tags}
                     />
                     <Header
                         open={open}
@@ -63,15 +63,13 @@ const CourseDetailsPage = ({ id }: Props) => {
                         setRoute={setRoute}
                         route={route}
                     />
-                    {stripePromise && (
-                        <CourseDetails
-                            data={data.course}
-                            stripePromise={stripePromise}
-                            clientSecret={clientSecret}
-                            setRoute={setRoute}
-                            setOpen={setOpen}
-                        />
-                    )}
+                    <CourseDetails
+                        data={data.course}
+                        stripePromise={stripePromise}
+                        clientSecret={clientSecret}
+                        setRoute={setRoute}
+                        setOpen={setOpen}
+                    />
                     <Footer />
                 </div>
             )}

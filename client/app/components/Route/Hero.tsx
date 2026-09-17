@@ -54,6 +54,7 @@ const Hero: FC<Props> = (props) => {
                         <Image
                             src={
                                 data?.layout?.banner?.image?.url ||
+                                // eslint-disable-next-line @typescript-eslint/no-require-imports
                                 require("../../../public/assests/hero-banner-1.png")
                             }
                             width={400}

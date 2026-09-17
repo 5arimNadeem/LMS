@@ -21,7 +21,7 @@ const CourseInformation: FC<Props> = ({
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     if (data) {
-      setCategories(data.layout.categories);
+      setCategories(data.layout?.categories);
     }
   }, [data]);
   // console.log(data);
@@ -249,9 +249,10 @@ const CourseInformation: FC<Props> = ({
             onDrop={handleDrop}
           >
             {courseInfo.thumbnail ? (
-              <Image
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
                 src={courseInfo.thumbnail}
-                alt=""
+                alt="Course thumbnail preview"
                 className="max-h-full w-full object-cover"
               />
             ) : (

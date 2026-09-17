@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
       "res.cloudinary.com",
       "randomuser.me",
       "raw.githubusercontent.com",
+      "lh3.googleusercontent.com"
     ],
   },
 };
